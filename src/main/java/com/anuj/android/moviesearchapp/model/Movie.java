@@ -1,12 +1,13 @@
 package com.anuj.android.moviesearchapp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by anuj on 8/9/13.
  */
 
-public class Movie {
+public class Movie implements Serializable{
 
     public String score;
     public String popularity;
@@ -38,6 +39,16 @@ public class Movie {
             }
         }
         return null;
+        }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Movie [name=");
+        builder.append(name);
+        builder.append("]");
+        return builder.toString();
+
     }
 
 }

@@ -1,4 +1,4 @@
 Sample project to learn Android development
 
-- Its an movie and people search finder app
-- Uses TMDB APIs to query the TMDB movie and people database
+- Its a movie and people search app, which looks up TMBD database to search 
+or a movie or person based on query.

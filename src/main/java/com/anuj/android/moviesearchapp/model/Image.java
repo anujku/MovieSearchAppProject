@@ -1,10 +1,12 @@
 package com.anuj.android.moviesearchapp.model;
 
+import java.io.Serializable;
+
 /**
  * Created by anuj on 8/9/13.
  */
 
-public class Image {
+public class Image implements Serializable{
 
     public static final String SIZE_ORIGINAL = "original";
     public static final String SIZE_MID = "mid";
