@@ -1,6 +1,13 @@
 package com.anuj.android.moviesearchapp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -13,6 +20,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.anuj.android.moviesearchapp.services.GenericSeeker;
+import com.anuj.android.moviesearchapp.model.*;
+import com.anuj.android.moviesearchapp.services.MovieSeeker;
+import com.anuj.android.moviesearchapp.services.PersonSeeker;
+
 public class MovieSearchAppActivity extends Activity {
     private static final String EMPTY_STRING = "";
 
@@ -22,6 +34,10 @@ public class MovieSearchAppActivity extends Activity {
     private RadioGroup searchRadioGroup;
     private TextView searchTypeTextView;
     private Button searchButton;
+    private GenericSeeker<Movie> movieSeeker = new MovieSeeker();
+    private GenericSeeker<Person> personSeeker = new PersonSeeker();
+    private ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +53,7 @@ public class MovieSearchAppActivity extends Activity {
             @Override
             public void onClick(View v) {
                 String query = searchEditText.getText().toString();
-                if (moviesSearchRadioButton.isChecked()) {
-                    longToast(moviesSearchRadioButton.getText() + " " + query);
-                }
-                else if (peopleSearchRadioButton.isChecked()) {
-                    longToast(peopleSearchRadioButton.getText() + " " + query);
-                }
+                performSearch(query);
             }
         });
 
@@ -101,4 +112,88 @@ public class MovieSearchAppActivity extends Activity {
 
     }
 
+    private class PerformMovieSearchTask extends AsyncTask<String, Void, ArrayList<Movie>> {
+
+        @Override
+        protected ArrayList<Movie> doInBackground(String... params) {
+            String query = params[0];
+            return movieSeeker.find(query);
+        }
+
+        @Override
+        protected void onPostExecute(final ArrayList<Movie> result) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (progressDialog!=null) {
+                        progressDialog.dismiss();
+                        progressDialog = null;
+                    }
+                    Intent intent = new Intent(MovieSearchAppActivity.this, MoviesListActivity.class);
+                    intent.putExtra("movies", result);
+                    startActivity(intent);
+                }
+            });
+        }
+
+    }
+
+    private void performSearch(String query) {
+
+        progressDialog = ProgressDialog.show(MovieSearchAppActivity.this,
+                "Please wait...", "Retrieving data...", true, true);
+
+        if (moviesSearchRadioButton.isChecked()) {
+            PerformMovieSearchTask task = new PerformMovieSearchTask();
+            task.execute(query);
+            progressDialog.setOnCancelListener(new CancelTaskOnCancelListener(task));
+        }
+        else if (peopleSearchRadioButton.isChecked()) {
+            PerformPersonSearchTask task = new PerformPersonSearchTask();
+            task.execute(query);
+            progressDialog.setOnCancelListener(new CancelTaskOnCancelListener(task));
+        }
+
+    }
+
+    private class PerformPersonSearchTask extends AsyncTask<String, Void, List<Person>> {
+
+        @Override
+        protected List<Person> doInBackground(String... params) {
+            String query = params[0];
+            return personSeeker.find(query);
+        }
+
+        @Override
+        protected void onPostExecute(final List<Person> result) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (progressDialog!=null) {
+                        progressDialog.dismiss();
+                        progressDialog = null;
+                    }
+                    if (result!=null) {
+                        for (Person person : result) {
+                            longToast(person.name);
+                        }
+                    }
+                }
+            });
+        }
+
+    }
+
+    private class CancelTaskOnCancelListener implements DialogInterface.OnCancelListener {
+        private AsyncTask<?, ?, ?> task;
+        public CancelTaskOnCancelListener(AsyncTask<?, ?, ?> task) {
+            this.task = task;
+        }
+        @Override
+        public void onCancel(DialogInterface dialog) {
+            if (task!=null) {
+                task.cancel(true);
+            }
+        }
+    }
 }

@@ -4,6 +4,8 @@ package com.anuj.android.moviesearchapp.services;
  * Created by anuj on 8/9/13.
  */
 
+import com.anuj.android.moviesearchapp.handlers.MovieHandler;
+import com.anuj.android.moviesearchapp.handlers.PersonHandler;
 import com.anuj.android.moviesearchapp.model.Movie;
 import com.anuj.android.moviesearchapp.model.Person;
 
