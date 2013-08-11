@@ -19,4 +19,12 @@ public class Utils {
         }
     }
 
+
+    public static boolean isMissing(String s){
+        if (s==null||s.trim().equals("")) {
+            return true;
+        }
+        return false;
+    }
+
 }

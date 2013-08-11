@@ -5,14 +5,16 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="#928e44">
+        android:background="#010101"
+        android:baselineAligned="true">
 
     <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/search_edit_text"
             android:layout_gravity="left|center_vertical"
-            android:text="@string/search"/>
+            android:text="@string/search"
+            android:textColor="#ffffff"/>
 
     <RadioGroup
             android:layout_width="fill_parent"
@@ -29,14 +31,16 @@
                 android:layout_height="wrap_content"
                 android:text="@string/movies"
                 android:id="@+id/movie_search_radio_button"
-                android:checked="true"/>
+                android:checked="true"
+                android:textColor="#ffffff"/>
 
         <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/people"
                 android:id="@+id/people_search_radio_button"
-                android:clickable="true"/>
+                android:clickable="true"
+                android:textColor="#ffffff"/>
     </RadioGroup>
 
     <TextView
@@ -49,7 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/search"
-            android:id="@+id/search_button"/>
+            android:id="@+id/search_button"
+            android:textColor="#ffffff"/>
 
     <TableLayout
             android:layout_width="fill_parent"
