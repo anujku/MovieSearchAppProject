@@ -41,6 +41,18 @@ public class Movie implements Serializable{
         return null;
         }
 
+    public String retrieveCoverImage() {
+        if (imagesList!=null && !imagesList.isEmpty()) {
+            for (Image movieImage : imagesList) {
+                if (movieImage.size.equalsIgnoreCase(Image.SIZE_COVER) &&
+                        movieImage.type.equalsIgnoreCase(Image.TYPE_POSTER)) {
+                    return movieImage.url;
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
