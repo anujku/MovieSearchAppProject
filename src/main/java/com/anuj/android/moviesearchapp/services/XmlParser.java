@@ -6,6 +6,7 @@ package com.anuj.android.moviesearchapp.services;
 
 import com.anuj.android.moviesearchapp.handlers.MovieHandler;
 import com.anuj.android.moviesearchapp.handlers.PersonHandler;
+import com.anuj.android.moviesearchapp.handlers.SingleMovieHandler;
 import com.anuj.android.moviesearchapp.model.Movie;
 import com.anuj.android.moviesearchapp.model.Person;
 
@@ -74,7 +75,28 @@ public class XmlParser {
             e.printStackTrace();
             return null;
         }
+    }
 
+    public Movie parseSingleMovieResponse(String xml) {
+
+        try {
+
+            XMLReader xmlreader = initializeReader();
+
+            SingleMovieHandler singleMovieHandler = new SingleMovieHandler();
+
+            // assign our handler
+            xmlreader.setContentHandler(singleMovieHandler);
+            // perform the synchronous parse
+            xmlreader.parse(new InputSource(new StringReader(xml)));
+
+            return singleMovieHandler.retrieveMovie();
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

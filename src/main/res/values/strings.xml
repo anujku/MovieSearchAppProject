@@ -24,4 +24,6 @@
 
     <string name="no_movie_selected">No movie selected</string>
 
+    <string name="widget_name">MovieSearchAppWidget</string>
+
 </resources>
